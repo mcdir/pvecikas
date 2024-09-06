@@ -1,6 +1,7 @@
 
+[project](https://github.com/mcdir/pvecikas/)
+
 @todo:
-- off certificate
 - make init
 - make build
 
