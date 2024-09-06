@@ -1,0 +1,105 @@
+#!/bin/bash
+# current version: {{ current_version }}
+source ./.envs/.env.sh $@
+
+if [ ! -z "${DISPLAY_DEBUG}" ]; then
+  debug_cf
+fi
+
+if [ ! -z "${DISPLAY_USAGE}" ]; then
+  cat << EOF
+Prepare vm image with virt-customize
+add to vm image
+  - soft
+  - keys
+  - self signed cets
+usage:
+  ./prepare-virt-customize.sh --image-virt-customize-name debian-custom.img
+
+  -img-base|--image-virt-base-name         : set env  IMAGE_NAME
+  -img-custom|--image-virt-customize-name  : set env  IMAGE_VIRT_CUSTOMIZE_NAME
+
+EOF
+exit 1
+fi
+
+echo "  IMAGE_VIRT_CUSTOMIZE_NAME    =   ${IMAGE_VIRT_CUSTOMIZE_NAME}"
+echo "  IMAGE_VIRT_CUSTOMIZE_PATH    =   ${IMAGE_VIRT_CUSTOMIZE_PATH}"
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+
+echo "Try download image from ${IMAGE_URL}${IMAGE_NAME} to ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_NAME}"
+wget -O ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_NAME} --continue ${IMAGE_URL}${IMAGE_NAME}
+#wget $ubuntuImageURL --no-clobber -O  ${IMAGE_NAME}
+
+# run first time, no image provide
+if [ ! -f "${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}" ]; then
+  #  tmpfile=$(mktemp ./${IMAGE_NAME}-XXX.patched.img)
+  #  cp ${IMAGE_NAME} $tmpfile
+  #  export IMAGE_NAME=$tmpfile
+  echo "cp ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_NAME}" "${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}"
+  cp "${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_NAME}" "${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}"
+
+  # update user pass, Read and set root user password from file. --password-crypto md5|sha256|sha512
+  ## https://libguestfs.org/virt-builder.1.html#users-and-passwords
+{%- if os in ["rocky"] %}
+  sudo virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME} --root-password password:{{ root_passwd }} --password-crypto sha512
+{% else %}
+  sudo virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME} --root-password password:{{ root_passwd }}
+{%- endif %}
+
+  # Image customization
+  ## Install qemu-guest-agent on the image. Additional packages can be specified by separating with a comma.
+{%- if os == "ubuntu" %}
+  sudo virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME} --run-command "add-apt-repository universe"
+{%- endif %}
+
+{%- if os in ["rocky","centos"] %}
+  # @todo update break image, can't login
+{% else %}
+  sudo virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME} --update
+  # install
+  sudo virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME} --install qemu-guest-agent \
+    --install mc \
+    --install atool \
+    --install htop \
+    --install p7zip-full \
+    --install iotop \
+    --install ca-certificates \
+    --install curl
+{%- endif %}
+
+  # custome
+  ## sudo virt-customize -a hirsute-server-cloudimg-amd64.img --run-command 'resize2fs /dev/sda'
+
+{%- if os in ["rocky","centos"] -%}
+{% else %}
+  ## add cert
+  #virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "mkdir -p /etc/ssl/private/"
+  virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "mkdir -p /usr/share/ca-certificates/self"
+  virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --copy-in "${SERT_FOLDER_PATH}/:/usr/share/ca-certificates/"
+  virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "mv /usr/share/ca-certificates/xen-home/* /usr/share/ca-certificates/self/"
+  virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "rm -rf /usr/share/ca-certificates/xen-home/"
+  #
+{%- if ssl %}
+  virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  \
+    {%- for cert in ssl["name"] %}
+      --run-command "mv /usr/share/ca-certificates/self/{{ cert }} /usr/share/ca-certificates/self/{{ cert | replace(".pem",".crt")  }}" \
+    {%- endfor %}
+      --run-command "chmod 755 /usr/share/ca-certificates/self" \
+      --run-command "chown -R root:root /usr/share/ca-certificates/self"
+{% endif %}
+  #
+  #virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "chown -R root:root /usr/share/ca-certificates/self"
+
+  virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "dpkg-reconfigure --frontend=noninteractive ca-certificates"
+  virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "sed -i 's/!//g' /etc/ca-certificates.conf" \
+      --run-command "/usr/sbin/update-ca-certificates" \
+      --run-command "update-ca-certificates --fresh"
+{%- endif %}
+
+else
+  #echo -e "\nIMAGE_NAME=$1 "
+  #export IMAGE_NAME=$1
+  echo "nothing to do"
+fi

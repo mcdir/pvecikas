@@ -1,0 +1,87 @@
+#cloud-config
+# current version: {{ os }} / {{ current_version }}
+# hostname: test
+manage_etc_hosts: true
+user: {{ default_os_user }}
+ssh_authorized_keys:
+{%- for ssh_authorized_key in ssh_authorized_keys %}
+  - {{ ssh_authorized_key -}}
+{% endfor %}
+
+chpasswd:
+  expire: False
+
+groups:
+  - docker
+
+# Option 1 - create users
+users:
+  - default
+  # add user and put in to groups
+  - name: {{ default_os_user }}
+    # gecos: Example User,600-700-8090
+    shell: /bin/bash
+    lock_passwd: false
+    {%- if default_os_user_passwd %}
+    passwd: {{ default_os_user_passwd }}
+    {% endif %}
+    groups:
+      - sudo
+      - docker
+    sudo:
+      - ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+    {%- for ssh_authorized_key in ssh_authorized_keys %}
+     - {{ ssh_authorized_key -}}
+    {% endfor -%}
+
+{%- if users %}
+{%- for user in users %}
+  - name: {{ user.user }}
+    # gecos: Example User,600-700-8090
+    shell: /bin/bash
+    lock_passwd: false
+    passwd: {{ user.passwd }}
+    groups:
+      - sudo
+      - docker
+    sudo:
+      - ALL=(ALL) NOPASSWD:ALL
+    {%- if user.ssh_pubs %}
+    ssh_authorized_keys:
+    {%- for ssh_pub in user.ssh_pubs %}
+     - {{ ssh_pub -}}
+    {% endfor -%}
+    {% endif -%}
+{% endfor %}
+{% endif %}
+
+# Option 1 - Full installation using cURL
+package_upgrade: true
+package_update: true
+package_reboot_if_required: true
+locale: en_GB.UTF-8
+timezone: Europe/Minsk
+
+#bootcmd:
+#  - printf "[Resolve]\nDNS=1.1.1.1" > /etc/systemd/resolved.conf
+#  - [systemctl, restart, systemd-resolved]
+
+packages:
+  - qemu-guest-agent
+  - curl
+  - gnupg
+  - ca-certificates
+#  - docker.io
+
+runcmd:
+#  - restorecon -R /home/rocky/.ssh
+#  - sed -i 's/[#]*PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+  # fix client_loop: send disconnect: Broken pipe <<EOF
+  - sed -i 's/[#]*ClientAliveInterval 0/ClientAliveInterval 60/g' /etc/ssh/sshd_config
+  - sed -i 's/[#]*ClientAliveCountMax 3/ClientAliveCountMax 10000/g' /etc/ssh/sshd_config
+  # EOF
+#  - sed -i 's/[#]*PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+#  - systemctl reload ssh
+
+final_message: "The system is finally up, coud init done after $UPTIME seconds"

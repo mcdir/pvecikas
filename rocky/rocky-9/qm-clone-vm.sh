@@ -1,0 +1,1 @@
+../../.global/.common/qm-clone-vm.sh

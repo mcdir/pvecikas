@@ -1,0 +1,1 @@
+../../.global/.common/prepare-os.sh
