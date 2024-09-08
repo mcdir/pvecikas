@@ -1,9 +1,5 @@
 
-[project](https://github.com/mcdir/pvecikas/)
-
-@todo:
-- make init
-- make build
+[project pvecikas: github](https://github.com/mcdir/pvecikas/)
 
 ```bash
 cp ./.utils 
