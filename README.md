@@ -1,12 +1,30 @@
 
 [project pvecikas: github](https://github.com/mcdir/pvecikas/)
 
+# Pvecikas (Proxmox cloud-init tools)
+Shell Script tools to create/delete VM cloud-init in Proxmox Virtual Environment (PVE) like [proxmox-cloud-init-tools](https://github.com/kmee/proxmox-cloud-init-tools/),
+but more complex.
 
-# Prepare project, create templates, etc.
+# Usage
+### Prepare project
+Login on your Proxmox VE server over SSH or Console Shell
+Clone pvecikas (proxmox cloud-init) project
+```
+git clone https://github.com/mcdir/pvecikas/
+cd pvecikas
+```
+
+### Create templates, etc.
 
 ```bash
 cp ./.utils 
 cp ./.env-example.yml ./.env.yml
+```
+
+update [.env.yml](./.utils/.env.yml) with you variables, like pub ssh key, default user password, etc.
+and run next:
+
+```bash
 bash ./re-build.sh
 ```
 
@@ -48,3 +66,31 @@ The project allows you to:
 - [qm-create-vm.sh](.global/.common/qm-create-vm.sh) - create vm via qm and env
 - [qm-destroy-vm.sh](.global/.common/qm-destroy-vm.sh) - destroy vm via qm and env
 - [qm-stop-vm.sh](.global/.common/qm-stop-vm.sh) - stop vm via qm and env
+
+
+### Features
+1. Auto cloud images download
+- Debian 9 - Stretch
+- Debian 10 - Buster
+- Debian 11 - Bullseye 11
+- Ubuntu Server 18.04 LTS - Bionic
+- Ubuntu Server 20.04 LTS - Focal
+- Ubuntu Server 22.04 LTS - Jammy
+- Ubuntu Server 24.04 LTS - Noble
+
+2. Set VM Hostname
+3. Set VM Description
+4. Memory (any, via params)
+5. CPU Cores - @todo
+6. CPU Sockets - @todo
+7. Storage destination (Local, NFS, LVM/LVM-Thin, etc)
+8. Define and custom users.
+9. Insert SSH authorized keys to users;
+10. Select bridge network;
+11. Select Static/IP or DHCP usage;
+12. Define uniq VMID;
+13. Can start or not, VM after deployment.
+
+### Contributors
+
+ME mcdirx@gmail.com
