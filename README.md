@@ -39,12 +39,12 @@ The project allows you to:
 
 # List of utilities:
 
-- ![prepare-os.sh](.global/.common/prepare-os.sh) - prepare proxmox os for next step
-- ![prepare-pve.sh](.global/.common/prepare-pve.sh) — copy cloud-init templates to proxmox environment
-- ![prepare-virt-customize.sh](.global/.common/prepare-virt-customize.sh) — prepare VM using virt-customize
+- [prepare-os.sh](.global/.common/prepare-os.sh) - prepare proxmox os for next step
+- [prepare-pve.sh](.global/.common/prepare-pve.sh) — copy cloud-init templates to proxmox environment
+- [prepare-virt-customize.sh](.global/.common/prepare-virt-customize.sh) — prepare VM using virt-customize
 
 ## Proxmox
-- ![qm-clone-vm.sh](.global/.common/qm-clone-vm.sh) - clone vm via qm and env
-- ![qm-create-vm.sh](.global/.common/qm-create-vm.sh) - create vm via qm and env
-- ![qm-destroy-vm.sh](.global/.common/qm-destroy-vm.sh) - destroy vm via qm and env
-- ![qm-stop-vm.sh](.global/.common/qm-stop-vm.sh) - stop vm via qm and env
+- [qm-clone-vm.sh](.global/.common/qm-clone-vm.sh) - clone vm via qm and env
+- [qm-create-vm.sh](.global/.common/qm-create-vm.sh) - create vm via qm and env
+- [qm-destroy-vm.sh](.global/.common/qm-destroy-vm.sh) - destroy vm via qm and env
+- [qm-stop-vm.sh](.global/.common/qm-stop-vm.sh) - stop vm via qm and env
