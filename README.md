@@ -17,8 +17,19 @@ cd pvecikas
 ### Create templates, etc.
 
 ```bash
-cp ./.utils 
+# Prepare
+sudo apt-get install pytho3-jinja2 -y
+#
+cd ./.utils 
 cp ./.env-example.yml ./.env.yml
+# example for ubuntu
+cd ..
+cd ubuntu/jammy-22.04/
+./init.sh
+nano ./.envs/.env_local.sh
+# update next variables or keep it as it is:
+# export PV_STORAGE_ID="local-lvm"
+# export PV_STORAGE_TYPE="lvm"
 ```
 
 update [.env.yml](./.utils/.env.yml) with you variables, like pub ssh key, default user password, etc.
