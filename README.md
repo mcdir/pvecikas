@@ -18,7 +18,7 @@ cd pvecikas
 
 ```bash
 # Prepare
-sudo apt-get install python3-jinja2 -y
+sudo apt-get install python3-jinja2 git -y
 #
 cd ./.utils 
 cp ./.env-example.yml ./.env.yml
@@ -51,7 +51,6 @@ qm-create-vm.sh # create vm
 qm-clone-vm.sh
 qm-destroy-vm.sh
 qm-stop-vm.sh
-
 ```
 
 # Motivation

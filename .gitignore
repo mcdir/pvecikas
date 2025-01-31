@@ -1,6 +1,5 @@
 **/*.img
 **/*.qcow2
-
 **/.env_local.sh
 **/.env.yml
 
