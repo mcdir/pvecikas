@@ -18,7 +18,7 @@ cd pvecikas
 
 ```bash
 # Prepare
-sudo apt-get install pytho3-jinja2 -y
+sudo apt-get install python3-jinja2 git -y
 #
 cd ./.utils 
 cp ./.env-example.yml ./.env.yml
@@ -37,6 +37,20 @@ and run next:
 
 ```bash
 bash ./re-build.sh
+```
+
+then example:
+```bash
+cd pvecikas/ubuntu/jammy-22.04
+bash init.sh
+# prepare-os.sh   - internal scriots
+# prepare-pve.sh  - internal scriots
+prepare-virt-customize.sh
+# vm scrips
+qm-create-vm.sh # create vm 
+qm-clone-vm.sh
+qm-destroy-vm.sh
+qm-stop-vm.sh
 ```
 
 # Motivation
