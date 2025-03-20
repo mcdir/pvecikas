@@ -8,7 +8,8 @@ fi
 
 if [ ! -z "${DISPLAY_USAGE}" ]; then
 cat << EOF
-usage: ...\n ./qm-clone-vm.sh --size 15 --net 1 --start 1';
+usage:
+ ./qm-clone-vm.sh --size 15 --net 1 --start 1';
 EOF
 exit 1
 fi
