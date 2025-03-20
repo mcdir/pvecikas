@@ -17,17 +17,17 @@ EOF
 exit 1
 fi
 
-echo -e "VM_ID=$VM_ID, VM_CLONE_ID=$VM_CLONE_ID, VM_DESTROY=${VM_DESTROY}, VM_DESTROY_TYPE=${VM_DESTROY_TYPE} "
+echo -e "VM_ID=$VM_ID, VM_CLONE_ID=$VM_CLONE_ID, VM_DESTROY=${VM_DESTROY}, VM_DESTROY_PLAN=${VM_DESTROY_PLAN} "
 
 # full , clone-only, vm
-if [ "${VM_DESTROY_TYPE}" == "vm" ]; then
+if [ "${VM_DESTROY_PLAN}" == "vm" ]; then
   echo -e "... qm stop $VM_ID "
   qm stop $VM_ID || true
   echo "clean up vm"
   qm destroy $VM_ID --destroy-unreferenced-disks 1 --purge 1
 fi
 
-if [ "${VM_DESTROY_TYPE}" == "clone-only" ]; then
+if [ "${VM_DESTROY_PLAN}" == "clone-only" ]; then
   echo -e "... qm stop $VM_CLONE_ID"
   qm stop $VM_CLONE_ID || true
   echo "clean up clone"
@@ -35,7 +35,7 @@ if [ "${VM_DESTROY_TYPE}" == "clone-only" ]; then
   qm destroy $VM_CLONE_ID --destroy-unreferenced-disks 1 --purge 1
 fi
 
-if [ "${VM_DESTROY_TYPE}" == "full" ]; then
+if [ "${VM_DESTROY_PLAN}" == "full" ]; then
   echo -e "... qm stop $VM_ID "
   qm stop $VM_ID || true
   echo -e "... qm stop $VM_CLONE_ID"

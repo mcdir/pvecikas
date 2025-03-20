@@ -47,10 +47,10 @@ if [[ -z ${VM_DNS} ]]; then
   export VM_DNS="1.1.1.1"
 fi
 
-if [[ -z ${VM_DESTROY_TYPE} ]]; then
-  export VM_DESTROY_TYPE="vm"
+if [[ -z ${VM_DESTROY_PLAN} ]]; then
+  export VM_DESTROY_PLAN="vm"
 fi
 
-if [[ -z ${SERT_FOLDER_PATH} ]]; then
-  export SERT_FOLDER_PATH="./keys/ssl/k8s/xen-home"
+if [[ -z ${CERTIFICATE_FOLDER_PATH} ]]; then
+  export CERTIFICATE_FOLDER_PATH="./keys/ssl/k8s/xen-home"
 fi

@@ -1,14 +1,13 @@
 import os
 from jinja2 import Template
 import yaml
+from init_vars import get_vars
 
 CURRENT_VERSION="0.0.3"
 FILE_PATH = os.path.realpath(__file__)
 
 
-with open('.env.yml', 'r') as file:
-    default_vars = yaml.safe_load(file)
-
+default_vars = get_vars()
 for key in default_vars['pv_list']:
     try:
         with open(f'./.tpl/cloud-init/cloud-init-{key["os"]}.yml.jinja2') as file:
@@ -31,6 +30,9 @@ for key in default_vars['pv_list']:
             ssl = False
         out.write(template.render(
             current_version=CURRENT_VERSION + "-" + key["os"],
+            default_dns=default_vars["common_vars"]['default_dns'],
+            certificate_folder_path=default_vars["common_vars"]['certificate_folder_path'],
+            #
             os=key["os"],
             default_os_user=key["default_os_user"],
             os_distr_name=key["family"],

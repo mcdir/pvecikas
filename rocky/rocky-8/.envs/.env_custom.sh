@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# current version: 0.0.2
+# current version: 0.0.3
 # OS dependent
-## OS
 export OS_DISTR_NAME="8"
 
 # images
@@ -31,12 +30,13 @@ if [[ -z ${VM_CLONE_NAME} ]]; then
   export VM_CLONE_NAME="rocky-8-clone"
 fi
 
-if [[ -z ${VM_MEM} ]]; then
-  export VM_MEM=2048
-fi
-
 if [[ -z ${CLOUD_INIT_TEMPLATE_NAME} ]]; then
   export CLOUD_INIT_TEMPLATE_NAME="cloud-init-rocky-8-default.yml"
+fi
+
+## VM resource
+if [[ -z ${VM_MEM} ]]; then
+  export VM_MEM=2048
 fi
 
 if [[ -z ${VM_SETTINGS} ]]; then
@@ -53,10 +53,11 @@ if [[ -z ${VM_DNS} ]]; then
   export VM_DNS="1.1.1.1"
 fi
 
-if [[ -z ${VM_DESTROY_TYPE} ]]; then
-  export VM_DESTROY_TYPE="vm"
+## full , clone-only, vm
+if [[ -z ${VM_DESTROY_PLAN} ]]; then
+  export VM_DESTROY_PLAN="vm"
 fi
 
-if [[ -z ${SERT_FOLDER_PATH} ]]; then
-  export SERT_FOLDER_PATH="./keys/ssl/k8s/xen-home"
+if [[ -z ${CERTIFICATE_FOLDER_PATH} ]]; then
+  export CERTIFICATE_FOLDER_PATH="./keys/ssl/"
 fi

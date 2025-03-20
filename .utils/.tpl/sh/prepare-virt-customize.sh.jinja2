@@ -77,7 +77,7 @@ if [ ! -f "${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}" ]; then
   ## add cert
   #virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "mkdir -p /etc/ssl/private/"
   virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "mkdir -p /usr/share/ca-certificates/self"
-  virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --copy-in "${SERT_FOLDER_PATH}/:/usr/share/ca-certificates/"
+  virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --copy-in "${CERTIFICATE_FOLDER_PATH}/:/usr/share/ca-certificates/"
   virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "mv /usr/share/ca-certificates/xen-home/* /usr/share/ca-certificates/self/"
   virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "rm -rf /usr/share/ca-certificates/xen-home/"
   #

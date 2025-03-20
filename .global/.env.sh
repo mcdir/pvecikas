@@ -43,7 +43,7 @@ debug_cf(){
 
     echo " Cloud init extra:"
     echo "  CLOUD_INIT_EXTRA            = ${CLOUD_INIT_EXTRA}"
-    echo "  SERT_FOLDER_PATH            = ${SERT_FOLDER_PATH}"
+    echo "  CERTIFICATE_FOLDER_PATH            = ${CERTIFICATE_FOLDER_PATH}"
 
     echo " Prepare:"
     echo "  PV_TEMPLATES_COPY_ALL       = ${PV_TEMPLATES_COPY_ALL}"
@@ -130,7 +130,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     # full , clone-only, vm
     -clean-type|--destroy-type)
-      VM_DESTROY_TYPE="$2" # default vm
+      VM_DESTROY_PLAN="$2" # default vm
       shift # past argument
       shift # past value
       ;;

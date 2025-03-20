@@ -1,12 +1,11 @@
 import os
 from jinja2 import Template
 import yaml
+from init_vars import get_vars
 
-CURRENT_VERSION="0.0.2"
+CURRENT_VERSION="0.0.3"
 
-
-with open('.env.yml', 'r') as file:
-    default_vars = yaml.safe_load(file)
+default_vars = get_vars()
 
 with open('./.tpl/sh/env_custom.sh.jinja2') as file:
     template = Template(file.read())
@@ -17,6 +16,9 @@ for key in default_vars['pv_list']:
         print(f'   ../{key["os"]}/{key["path"]}/.envs/.env_custom.sh')
         out.write(template.render(
             current_version=CURRENT_VERSION,
+            default_dns=get_vars('common_vars').get('default_dns'),
+            certificate_folder_path=get_vars('common_vars').get('certificate_folder_path'),
+            #
             os=key["os"],
             default_os_user=key["default_os_user"],
             os_distr_name=key["family"],

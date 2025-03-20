@@ -2,10 +2,10 @@ import os
 from jinja2 import Template
 import yaml
 import subprocess
+from init_vars import get_vars
 
 
-with open('.env.yml', 'r') as file:
-    default_vars = yaml.safe_load(file)
+default_vars = get_vars()
 
 for key in default_vars['pv_list']:
     print(f'{key["os"]}-{key["family"]} {key["path"]}')
