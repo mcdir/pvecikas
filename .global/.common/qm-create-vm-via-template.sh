@@ -6,6 +6,8 @@ if [ ! -z "${DISPLAY_DEBUG}" ]; then
   debug_cf
 fi
 
+# @todo: add global help
+
 echo -e "... Info ..."
 echo -e "VM_ID $VM_ID"
 echo -e "VM_CLONE_ID $VM_CLONE_ID"

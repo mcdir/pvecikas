@@ -6,6 +6,8 @@ if [ ! -z "${DISPLAY_DEBUG}" ]; then
   debug_cf
 fi
 
+# @todo: add global help
+
 if [ ! -z "${DISPLAY_USAGE}" ]; then
 cat << EOF
 usage: ...\n ./qm-clone-vm.sh --size 15 --net 1 --start 1';
@@ -27,6 +29,7 @@ fi
 
 echo -e "... qm set ${VM_ID} --cicustom user=local:snippets/${CLOUD_INIT_TEMPLATE_NAME}"
 qm set ${VM_ID} --cicustom "user=local:snippets/${CLOUD_INIT_TEMPLATE_NAME}"
+echo -e "... qm set ${VM_ID} --ipconfig0 ${VM_IPCONFIG0}"
 qm set ${VM_ID} --ipconfig0 "${VM_IPCONFIG0}"
 
 if [ -z "$VM_DISK_PLUS" ]; then
@@ -34,11 +37,13 @@ if [ -z "$VM_DISK_PLUS" ]; then
 else
   echo -e "... resize vm to ${VM_DISK_PLUS}GB..."
   echo -e "... qm resize ${VM_ID} scsi0 \"+${VM_DISK_PLUS}G\"..."
+  # @todo: check, is resize - done ?
   sleep 5
   qm resize ${VM_ID} scsi0 "+${VM_DISK_PLUS}G"
 fi
 
 if [ -z "$VM_KEEP_DEFAULT_NET" ]; then
+  echo -e "... qm set ${VM_CLONE_ID} --ipconfig0 ${VM_IPCONFIG0}"
   qm set "${VM_CLONE_ID}" --ipconfig0 "${VM_IPCONFIG0}"
 else
   echo -e "... skip set default net"
@@ -49,5 +54,6 @@ echo -e "... qm start ${VM_CLONE_ID} (VM_START is $VM_START)"
 if [ -z $VM_START ]; then
   echo -e "...skip start..."
 else
+  echo -e "... qm start ${VM_CLONE_ID}"
   qm start "${VM_CLONE_ID}"
 fi

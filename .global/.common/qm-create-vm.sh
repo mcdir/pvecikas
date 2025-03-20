@@ -6,6 +6,8 @@ if [ ! -z "${DISPLAY_DEBUG}" ]; then
   debug_cf
 fi
 
+# @todo: add global help
+
 if [ ! -z "${DISPLAY_USAGE}" ]; then
 cat << EOF
 Clone VM based on cloud image
@@ -25,25 +27,28 @@ echo -e "... Create ..."
 echo "    qm create ${VM_ID} --name ${VM_NAME} --memory ${VM_MEM} ${VM_SETTINGS}"
 qm create ${VM_ID} --name ${VM_NAME} --memory ${VM_MEM} ${VM_SETTINGS}
 
-echo -e "\nqm importdisk disk ..."
-echo -e "\nqm importdisk ${VM_ID} ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME} ${PV_STORAGE_ID}"
+echo -e "\n... qm importdisk disk ..."
+echo -e "\n... qm importdisk ${VM_ID} ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME} ${PV_STORAGE_ID}"
 qm importdisk ${VM_ID} ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME} ${PV_STORAGE_ID} > /dev/null
 
 # Attache on exist VM, old syntax is buggy
 # unused0:local-lvm:vm-9031-disk-0
 if [ "$PV_STORAGE_TYPE" == "lvm" ]; then
-  echo "import LVM disk"
+  echo "... import LVM disk"
   qm set ${VM_ID} --scsihw virtio-scsi-pci --scsi0 ${PV_STORAGE_ID}:vm-${VM_ID}-disk-0 # no RAW in LVM
 else
-  echo "import RAW disk"
+  echo "... import RAW disk"
   qm set ${VM_ID} --scsihw virtio-scsi-pci --scsi0 ${PV_STORAGE_ID}:${VM_ID}/vm-${VM_ID}-disk-0.raw # no RAW in LVM
 fi
 
 # Connect Cloud-init disk
+echo "... qm set ${VM_ID} --ide2 ${PV_STORAGE_ID}:cloudinit"
 qm set ${VM_ID} --ide2 ${PV_STORAGE_ID}:cloudinit
 # Make boot from scsi0
+echo "... qm set ${VM_ID} --boot c --bootdisk scsi0"
 qm set ${VM_ID} --boot c --bootdisk scsi0
 # Set VGA to std
+echo "... qm set ${VM_ID} --serial0 socket --vga std"
 qm set ${VM_ID} --serial0 socket --vga std
 
 #

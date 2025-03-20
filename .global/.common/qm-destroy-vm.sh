@@ -6,6 +6,8 @@ if [ ! -z "${DISPLAY_DEBUG}" ]; then
   debug_cf
 fi
 
+# @todo: add global help
+
 if [ ! -z "${DISPLAY_USAGE}" ]; then
 cat << EOF
 Destroy test VM
