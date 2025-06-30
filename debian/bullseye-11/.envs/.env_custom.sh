@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# current version: 0.0.3
-# OS dependent
+# current version: 0.0.5
+## OS dependent
 export OS_DISTR_NAME="bullseye"
 
-# images
+## images
 if [[ -z ${IMAGE_NAME} ]]; then
     export IMAGE_NAME="debian-11-generic-amd64-daily.qcow2"
 fi
@@ -13,7 +13,7 @@ if [[ -z ${IMAGE_URL} ]]; then
     export IMAGE_URL="https://cloud.debian.org/images/cloud/bullseye/daily/latest/"
 fi
 
-# VM
+## VM
 if [[ -z ${VM_NAME} ]]; then
     export VM_NAME="debian-bullseye-test"
 fi
@@ -34,7 +34,7 @@ if [[ -z ${CLOUD_INIT_TEMPLATE_NAME} ]]; then
   export CLOUD_INIT_TEMPLATE_NAME="cloud-init-debian-bullseye-default.yml"
 fi
 
-## VM resource
+### VM resource
 if [[ -z ${VM_MEM} ]]; then
   export VM_MEM=2048
 fi

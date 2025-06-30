@@ -4,6 +4,7 @@ import yaml
 import subprocess
 from init_vars import get_vars
 
+CURRENT_VERSION="0.0.5"
 
 default_vars = get_vars()
 

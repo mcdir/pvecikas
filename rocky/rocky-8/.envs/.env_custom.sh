@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# current version: 0.0.3
-# OS dependent
+# current version: 0.0.5
+## OS dependent
 export OS_DISTR_NAME="8"
 
-# images
+## images
 if [[ -z ${IMAGE_NAME} ]]; then
     export IMAGE_NAME="Rocky-8-GenericCloud-Base-8.10-20240528.0.x86_64.qcow2"
 fi
@@ -13,7 +13,7 @@ if [[ -z ${IMAGE_URL} ]]; then
     export IMAGE_URL="https://download.rockylinux.org/pub/rocky/8/images/x86_64/"
 fi
 
-# VM
+## VM
 if [[ -z ${VM_NAME} ]]; then
     export VM_NAME="rocky-8-test"
 fi
@@ -34,7 +34,7 @@ if [[ -z ${CLOUD_INIT_TEMPLATE_NAME} ]]; then
   export CLOUD_INIT_TEMPLATE_NAME="cloud-init-rocky-8-default.yml"
 fi
 
-## VM resource
+### VM resource
 if [[ -z ${VM_MEM} ]]; then
   export VM_MEM=2048
 fi

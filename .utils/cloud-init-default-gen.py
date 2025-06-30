@@ -3,7 +3,7 @@ from jinja2 import Template
 import yaml
 from init_vars import get_vars
 
-CURRENT_VERSION="0.0.3"
+CURRENT_VERSION="0.0.5"
 FILE_PATH = os.path.realpath(__file__)
 
 

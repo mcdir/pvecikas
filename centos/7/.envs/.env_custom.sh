@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# current version: 0.0.3
-# OS dependent
+# current version: 0.0.5
+## OS dependent
 export OS_DISTR_NAME="7"
 
-# images
+## images
 if [[ -z ${IMAGE_NAME} ]]; then
     export IMAGE_NAME="CentOS-7-x86_64-GenericCloud-2211.qcow2"
 fi
@@ -13,7 +13,7 @@ if [[ -z ${IMAGE_URL} ]]; then
     export IMAGE_URL="https://cloud.centos.org/centos/7/images/"
 fi
 
-# VM
+## VM
 if [[ -z ${VM_NAME} ]]; then
     export VM_NAME="centos-7-test"
 fi
@@ -34,7 +34,7 @@ if [[ -z ${CLOUD_INIT_TEMPLATE_NAME} ]]; then
   export CLOUD_INIT_TEMPLATE_NAME="cloud-init-centos-7-default.yml"
 fi
 
-## VM resource
+### VM resource
 if [[ -z ${VM_MEM} ]]; then
   export VM_MEM=2048
 fi
