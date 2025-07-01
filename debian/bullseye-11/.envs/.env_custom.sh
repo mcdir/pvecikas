@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# current version: 0.0.5
+# current version: 0.0.6
 ## OS dependent
 export OS_DISTR_NAME="bullseye"
 
@@ -44,9 +44,7 @@ if [[ -z ${VM_SETTINGS} ]]; then
 fi
 
 if [[ -z ${VM_IPCONFIG0} ]]; then
-  #export VM_IPCONFIG0="ip=dhcp --nameserver=${VM_DNS}"
   export VM_IPCONFIG0="ip=dhcp"
-  #@todo ip=192.168.0.16${VM_CLONE_ID_INC}/24
 fi
 
 if [[ -z ${VM_DNS} ]]; then
@@ -58,6 +56,6 @@ if [[ -z ${VM_DESTROY_PLAN} ]]; then
   export VM_DESTROY_PLAN="vm"
 fi
 
-if [[ -z ${CERTIFICATE_FOLDER_PATH} ]]; then
-  export CERTIFICATE_FOLDER_PATH="./keys/ssl/"
+if [[ -z ${CERTIFICATE_FROM_FOLDER_PATH} ]]; then
+  export CERTIFICATE_FROM_FOLDER_PATH="/usr/share/ca-certificates/self/"
 fi

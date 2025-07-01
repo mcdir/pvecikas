@@ -1,12 +1,25 @@
 
 [project pvecikas: github](https://github.com/mcdir/pvecikas/)
 
+- [Pvecikas (Proxmox cloud-init tools)](#pvecikas-proxmox-cloud-init-tools)
+- [Usage](#usage)
+    - [Prepare project](#prepare-project)
+    - [Setup project, create templates, etc.](#setup-project-create-templates-etc)
+    - [Example with ubuntu](#example-with-ubuntu)
+- [Motivation](#motivation)
+- [Project architecture:](#project-architecture)
+- [List of utilities:](#list-of-utilities)
+    - [Proxmox](#proxmox)
+        - [Features](#features)
+        - [Contributors](#contributors)
+
+
 # Pvecikas (Proxmox cloud-init tools)
 Shell Script tools to create/delete VM cloud-init in Proxmox Virtual Environment (PVE) like [proxmox-cloud-init-tools](https://github.com/kmee/proxmox-cloud-init-tools/),
 but more complex.
 
 # Usage
-### Prepare project
+## Prepare project
 Login on your Proxmox VE server over SSH or Console Shell
 Clone pvecikas (proxmox cloud-init) project
 ```
@@ -14,7 +27,7 @@ git clone https://github.com/mcdir/pvecikas/
 cd pvecikas
 ```
 
-### Create templates, etc.
+## Setup project, create templates, etc.
 
 ```bash
 # Prepare
@@ -39,12 +52,13 @@ and run next:
 bash ./re-build.sh
 ```
 
-then example:
+## Example with ubuntu
+
 ```bash
 cd pvecikas/ubuntu/jammy-22.04
-bash init.sh
-# prepare-os.sh   - internal scriots
-# prepare-pve.sh  - internal scriots
+#
+prepare-os.sh   # internal scripts, run once 
+prepare-pve.sh  # internal scripts for cloud init, run once
 prepare-virt-customize.sh
 # vm scrips
 qm-create-vm.sh # create vm 

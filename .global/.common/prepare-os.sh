@@ -11,7 +11,7 @@ fi
 if [ ! -z "${DISPLAY_USAGE}" ]; then
 cat << EOF
 Prepare os
-- install dependens
+- install dependents
 EOF
 fi
 

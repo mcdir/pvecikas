@@ -3,7 +3,7 @@ from jinja2 import Template
 import yaml
 from init_vars import get_vars
 
-CURRENT_VERSION="0.0.5"
+CURRENT_VERSION="0.0.6"
 FILE_PATH = os.path.realpath(__file__)
 
 
@@ -31,7 +31,7 @@ for key in default_vars['pv_list']:
         out.write(template.render(
             current_version=CURRENT_VERSION + "-" + key["os"],
             default_dns=default_vars["common_vars"]['default_dns'],
-            certificate_folder_path=default_vars["common_vars"]['certificate_folder_path'],
+            certificate_from_folder_path=default_vars["common_vars"]['certificate_from_folder_path'],
             #
             os=key["os"],
             default_os_user=key["default_os_user"],

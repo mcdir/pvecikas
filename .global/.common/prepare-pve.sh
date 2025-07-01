@@ -11,15 +11,12 @@ fi
 if [ ! -z "${DISPLAY_USAGE}" ]; then
 cat << EOF
 Prepare pve
-- check vm
-- check templates
-
+ - check vm
+ - check templates
+Params:
   -ca|--copy-all)
     PV_TEMPLATES_COPY_ALL="all"
-
   -cf-name|--cloud-init-template-name      : set env  CLOUD_INIT_TEMPLATE_NAME
-  -img-base|--image-virt-base-name         : set env  IMAGE_NAME
-  -img-custom|--image-virt-customize-name  : set env  IMAGE_VIRT_CUSTOMIZE_NAME
 
 EOF
 exit 1

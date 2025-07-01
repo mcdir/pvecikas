@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #----- celan --------
 ## https://stackoverflow.com/questions/14700579/bash-converting-string-to-boolean-variable
@@ -20,6 +20,7 @@ debug_cf(){
     echo "  IMAGE_NAME                  = ${IMAGE_NAME}"
     echo "  IMAGE_URL                   = ${IMAGE_URL}"
     echo "  IMAGE_VIRT_CUSTOMIZE_NAME   = ${IMAGE_VIRT_CUSTOMIZE_NAME}"
+    echo "  IMAGE_VIRT_BASE_VERSION     = ${IMAGE_VIRT_BASE_VERSION}"
     echo "  IMAGE_VIRT_CUSTOMIZE_PATH   = ${IMAGE_VIRT_CUSTOMIZE_PATH}"
 
     echo " PV local"
@@ -42,8 +43,8 @@ debug_cf(){
     echo "  VM_START                    = ${VM_START}"
 
     echo " Cloud init extra:"
-    echo "  CLOUD_INIT_EXTRA            = ${CLOUD_INIT_EXTRA}"
-    echo "  CERTIFICATE_FOLDER_PATH     = ${CERTIFICATE_FOLDER_PATH}"
+    echo "  CLOUD_INIT_EXTRA              = ${CLOUD_INIT_EXTRA}"
+    echo "  CERTIFICATE_FROM_FOLDER_PATH  = ${CERTIFICATE_FROM_FOLDER_PATH}"
 
     echo " Prepare:"
     echo "  PV_TEMPLATES_COPY_ALL       = ${PV_TEMPLATES_COPY_ALL}"
@@ -149,6 +150,11 @@ while [[ $# -gt 0 ]]; do
       shift # past argument
       shift # past value
       ;;
+    -img-base-version|--image-base-version)
+      IMAGE_VIRT_BASE_VERSION="$2"
+      shift # past argument
+      shift # past value
+      ;;
 #    -*|--*)
 #      echo "Unknown option $1"
 #      exit 1
@@ -189,9 +195,14 @@ if [[ -z ${IMAGE_VIRT_CUSTOMIZE_PATH} ]]; then
   export IMAGE_VIRT_CUSTOMIZE_PATH="./.images/"
 fi
 
+if [[ -z ${IMAGE_VIRT_BASE_VERSION} ]]; then
+  # format: .data or latest
+  export IMAGE_VIRT_BASE_VERSION=".latest"
+fi
+
+# rename base image
 if [[ -z ${IMAGE_VIRT_CUSTOMIZE_NAME} ]]; then
-  # rename base image
-  export IMAGE_VIRT_CUSTOMIZE_NAME=`echo "${IMAGE_NAME}" | sed -e "s/\.img/-custom.img/g" | sed -e "s/\.qcow2/-custom.qcow2/g"`
+  export IMAGE_VIRT_CUSTOMIZE_NAME=`echo "${IMAGE_NAME}" | sed -e "s/\.img/-custom${IMAGE_VIRT_BASE_VERSION}.img/g" | sed -e "s/\.qcow2/-custom${IMAGE_VIRT_BASE_VERSION}.qcow2/g"`
 fi
 
 # pve var
