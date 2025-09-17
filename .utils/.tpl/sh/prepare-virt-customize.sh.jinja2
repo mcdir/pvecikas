@@ -12,7 +12,7 @@ Prepare vm image with virt-customize
 add to vm image
   - soft
   - keys
-  - self signed cets
+  - self signed certs
 usage:
   ./prepare-virt-customize.sh --image-virt-customize-name debian-custom.img
 
@@ -84,10 +84,12 @@ if [ ! -f "${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}" ]; then
   #virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "mv /usr/share/ca-certificates/tmp-folder/* /usr/share/ca-certificates/self/"
   #virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  --run-command "rm -rf /usr/share/ca-certificates/tmp-folder/"  #}
 {%- if ssl %}
+  {#-  # off rename certs
+  #    {%- for cert in ssl["name"] %}
+  #  virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  \
+  #      --run-command "mv /usr/share/ca-certificates/self/{{ cert }} /usr/share/ca-certificates/self/{{ cert | replace(".pem",".crt")  }}"
+  #    {%- endfor %}  #}
   virt-customize -a ${IMAGE_VIRT_CUSTOMIZE_PATH}${IMAGE_VIRT_CUSTOMIZE_NAME}  \
-    {%- for cert in ssl["name"] %}
-      --run-command "mv /usr/share/ca-certificates/self/{{ cert }} /usr/share/ca-certificates/self/{{ cert | replace(".pem",".crt")  }}" \
-    {%- endfor %}
       --run-command "chmod 755 /usr/share/ca-certificates/self" \
       --run-command "chown -R root:root /usr/share/ca-certificates/self"
 {% endif %}
